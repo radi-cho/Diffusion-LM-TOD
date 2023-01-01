@@ -14,6 +14,8 @@ from collections import Counter, defaultdict
 from functools import partial
 from itertools import chain
 
+from spacy.symbols import ORTH
+
 
 def load_data_text(
     *, data_dir, batch_size, image_size, class_cond=False, deterministic=False, data_args=None, 
@@ -390,6 +392,13 @@ def get_corpus_rocstory(data_args, model, image_size, padding_mode='block',
             sentence_lst = []
             nlp = English()
             tokenizer = nlp.tokenizer
+
+            tokenizer.add_special_case(u'<bos_user>', [{ORTH: u'<bos_user>'}])
+            tokenizer.add_special_case(u'<bos_bot>', [{ORTH: u'<bos_bot>'}])
+            tokenizer.add_special_case(u'<eos_user>', [{ORTH: u'<eos_user>'}])
+            tokenizer.add_special_case(u'<eos_bot>', [{ORTH: u'<eos_bot>'}])
+            # TODO: Add more TOD tokens
+
             if split == 'train':
                 print('loading form the TRAIN set')
                 path = f'{data_args.e2e_train}/src1_train.txt'

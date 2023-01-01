@@ -120,7 +120,7 @@ class ModelArguments:
         metadata={"help": "simple wiki path"},
     )
     e2e_train: Optional[str] = field(
-        default='/u/scr/xlisali/e2e_data',
+        default='./datasets/e2e_data',
         metadata={"help": "simple wiki path"},
     )
 
@@ -1225,17 +1225,21 @@ def main():
                 tok_logger.warning(
                     "^^^^^^^^^^^^^^^^ Please ignore the warning above - this long input will be chunked into smaller bits before being passed to the model."
                 )
+            
             return result_dict
 
         with training_args.main_process_first(desc="dataset map tokenization"):
-            tokenized_datasets = raw_datasets.map(
-                tokenize_function,
-                batched=True,
-                num_proc=data_args.preprocessing_num_workers,
-                remove_columns=column_names,
-                load_from_cache_file=not data_args.overwrite_cache,
-                desc="Running tokenizer on dataset",
-            )
+            try:
+                tokenized_datasets = raw_datasets.map(
+                    tokenize_function,
+                    batched=True,
+                    num_proc=data_args.preprocessing_num_workers,
+                    remove_columns=column_names,
+                    load_from_cache_file=not data_args.overwrite_cache,
+                    desc="Running tokenizer on dataset",
+                )
+            except:
+                print("Exception during dataset map tokenization")
 
         def pad_function(group_lst):
             vocab_dict = raw_datasets.vocab
