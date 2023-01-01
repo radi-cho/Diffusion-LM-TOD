@@ -1,4 +1,26 @@
-# Diffusion-LM Improves Controllable Text Generation
+# Diffusion-LM-TOD
+
+This is a fork of https://github.com/XiangLi1999/Diffusion-LM created to pre-train the diffusion model with task-oriented conversational texts. Check out our research regarding TOD agents and auxiliary learning - https://github.com/radi-cho/RSTOD.
+
+## Training example
+
+```
+python3 scripts/run_train.py --diff_steps 2000 --model_arch transformer --lr 0.0001 --lr_anneal_steps 200000 --seed 102 --noise_schedule sqrt --in_channel 16 --modality e2e-tgt --submit no --padding_mode pad --app "--predict_xstart True --training_mode e2e --vocab_size 1858 --e2e_train ../datasets/multiwoz " --notes multiwoz
+```
+
+- Pre-trained model weights available [here](https://drive.google.com/file/d/15Ipr1GrV5R61ARr-5t_ttkFLlv814odt/view?usp=share_link).
+
+## Infilling example
+
+![TOD infilling example](https://github.com/radi-cho/Diffusion-LM-TOD/blob/main/assets/tod-infilling.png?raw=true)
+
+```
+cd improved-diffusion
+
+python3 scripts/infill.py --model_path diffusion_models/diff_e2e-tgt_pad_rand16_transformer_lr0.0001_0.0_2000_sqrt_Lsimple_h128_s2_d0.1_sd102_multiwoz/model200000.pt --batch_size 16 --partial_seq "START <bos_user> i am not sure of the type of food but could you please check again and see if you can find it ? thank you . PAD PAD could you double check that you have spelled the name correctly ? the closest i can find is PAD PAD PAD . <eos_bot> END" --eval_task_ infill
+```
+
+## Diffusion-LM Improves Controllable Text Generation
 
 https://arxiv.org/pdf/2205.14217.pdf 
 
