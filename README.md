@@ -5,6 +5,8 @@ This is a fork of https://github.com/XiangLi1999/Diffusion-LM created to pre-tra
 ## Training example
 
 ```
+cd improved-diffusion
+
 python3 scripts/run_train.py --diff_steps 2000 --model_arch transformer --lr 0.0001 --lr_anneal_steps 200000 --seed 102 --noise_schedule sqrt --in_channel 16 --modality e2e-tgt --submit no --padding_mode pad --app "--predict_xstart True --training_mode e2e --vocab_size 1858 --e2e_train ../datasets/multiwoz " --notes multiwoz
 ```
 
